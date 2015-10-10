@@ -5,9 +5,19 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
+#include <cstring>
 
+#include <libgen.h>
 
 #include "DAsm.h"
+
+std::string dirname(std::string path)
+{
+    char *c_path = strdup(path.c_str());
+    std::string dir(dirname(c_path));
+    free(c_path);
+    return dir;
+}
 
 /**
  * Load a file, processing any .include or #include directives.
@@ -20,6 +30,8 @@ std::string getFile(std::string filename) {
     
     // Open the file
     std::ifstream file(filename);
+
+    std::string fileDir = dirname(filename);
     
     // TODO: warn about missing files
     
@@ -67,7 +79,7 @@ std::string getFile(std::string filename) {
                 if(start < included_filename.size() && end <= included_filename.size() && start <= end) {
                 
                     // Trim out just the filename
-                    included_filename = included_filename.substr(start, end - start);
+                    included_filename = fileDir + "/" + included_filename.substr(start, end - start);
                     
                     // TODO: catch include loops
                     
