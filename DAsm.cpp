@@ -513,7 +513,7 @@ namespace DAsm{
         }
         //Handles defines, which are basically like labels
         if(first_str=="DEF"||first_str==".DEF"||
-           first_str=="DEFINE"||first_str==".DEFINE"){
+           first_str=="DEFINE"||first_str==".DEFINE"||first_str=="#DEFINE"){
             if(final_split_list.size()<2){
                 Error(std::string("Insufficient operands: ").append(source));
                 return;
